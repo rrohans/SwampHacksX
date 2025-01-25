@@ -1,3 +1,0 @@
-# SwampHacksX
-
-Hi
