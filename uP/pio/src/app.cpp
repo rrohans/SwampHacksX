@@ -12,6 +12,10 @@
 // #include <lv_api_map_v8.h>
 #include <vector>
 #include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 
 
@@ -56,27 +60,46 @@ void loop()
 
 
     std::vector<uint16_t> dVector; 
+    std::vector<uint16_t> iMax; 
 
+    dVector.clear();
+    iMax.clear();
 
-    uint16_t data = analogRead(GPIO_NUM_4);
-    std::string string = "ADC VAL: " + std::to_string(data);
+    
 
-    uint16_t startTime = millis();
     uint16_t elapsedTime = 0;
 
-    while(elapsedTime < 3000)
+
+    // 600 Samples over 3 seconds //
+    while(elapsedTime < 5650)
     {
-        dVector.push_back(analogRead(GPIO_NUM_4)); 
-        //
-        elapsedTime = millis()-startTime;
+        dVector.push_back(analogRead(GPIO_NUM_4));
+        delay(5); 
+        elapsedTime += 5;
     }
 
 
-
     uint16_t max = *std::max_element(dVector.begin(), dVector.end());
-    Serial.println(max);
+    //Serial.println(max);
+    uint16_t th = 15;
 
+    for(int i = 0; i < dVector.size(); i++)
+    {
+        if(dVector[i] < max + th && dVector[i] > max - th)
+        {
+            iMax.push_back(i);
+        }
+    }
 
+    Serial.println(iMax.size());
+
+    float BPM = (iMax.size()/5.65)*60;
+
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(2) << BPM;
+    std::string stBPM = stream.str();
+
+    std::string string = "Avg BPM: " + stBPM;
 
     // DISPLAY CODE //
     lvgl_port_lock(-1);
@@ -89,10 +112,10 @@ void loop()
     static lv_style_t style;
     lv_style_init(&style);
     // Set the font in the style (using a built-in font)
-    lv_style_set_text_font(&style, &lv_font_montserrat_20);
+    lv_style_set_text_font(&style, &lv_font_montserrat_44);
     // Apply the style to the label
     lv_obj_add_style(label, &style, LV_PART_MAIN);
-    lv_obj_align(label, LV_ALIGN_CENTER, -100,-100);
+    lv_obj_align(label, LV_ALIGN_CENTER, 0,0);
 
 
 
