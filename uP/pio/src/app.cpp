@@ -28,50 +28,59 @@ void setup()
     Serial.println("Initialize panel device");
     ESP_Panel *panel = new ESP_Panel();
     panel->init();
-#if LVGL_PORT_AVOID_TEAR
-    // When avoid tearing function is enabled, configure the RGB bus according to the LVGL configuration
-    ESP_PanelBus_RGB *rgb_bus = static_cast<ESP_PanelBus_RGB *>(panel->getLcd()->getBus());
-    rgb_bus->configRgbFrameBufferNumber(LVGL_PORT_DISP_BUFFER_NUM);
-    rgb_bus->configRgbBounceBufferSize(LVGL_PORT_RGB_BOUNCE_BUFFER_SIZE);
-#endif
+
+
+
+
+
     panel->begin();
 
     Serial.println("Initialize LVGL");
     lvgl_port_init(panel->getLcd(), panel->getTouch());
 
+
+
+
     Serial.println("Create UI");
     /* Lock the mutex due to the LVGL APIs are not thread-safe */
-    lvgl_port_lock(-1);
-
-    /* Create a simple label */
-    lv_obj_t *label = lv_label_create(lv_scr_act());
-    lv_label_set_text(label, title.c_str());
-    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
-
-    /**
-     * Try an example. Don't forget to uncomment header.
-     * See all the examples online: https://docs.lvgl.io/master/examples.html
-     * source codes: https://github.com/lvgl/lvgl/tree/e7f88efa5853128bf871dde335c0ca8da9eb7731/examples
-     */
-    //  lv_example_btn_1();
-
-    /**
-     * Or try out a demo.
-     * Don't forget to uncomment header and enable the demos in `lv_conf.h`. E.g. `LV_USE_DEMO_WIDGETS`
-     */
-    // lv_demo_widgets();
-    // lv_demo_benchmark();
-    // lv_demo_music();
-    // lv_demo_stress();
-
-    /* Release the mutex */
-    lvgl_port_unlock();
 
     Serial.println(title + " end");
 }
 
 void loop()
 {
+
+    uint16_t data = analogRead(GPIO_NUM_4);
+    std::string string = "ADC VAL: " + std::to_string(data);
+
+
+    data = data / 200;
+
+
+
+
+
+    // DISPLAY CODE //
+    lvgl_port_lock(-1);
+
+    // DISPLAY TEXT //
+    lv_obj_clean(lv_scr_act());
+    /* Create a simple label */
+    lv_obj_t *label = lv_label_create(lv_scr_act());
+    lv_label_set_text(label, string.c_str());
+    static lv_style_t style;
+    lv_style_init(&style);
+    // Set the font in the style (using a built-in font)
+    lv_style_set_text_font(&style, &lv_font_montserrat_20);
+    // Apply the style to the label
+    lv_obj_add_style(label, &style, LV_PART_MAIN);
+    lv_obj_align(label, LV_ALIGN_CENTER, -100,-100);
+
+
+
+    // DISPLAY GRAPH //
+    lvgl_port_unlock();
+
     Serial.println("IDLE loop");
-    delay(1000);
+    //delay(1000);
 }
