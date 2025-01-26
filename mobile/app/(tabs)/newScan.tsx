@@ -12,7 +12,33 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import React from "react";
+
+const newScanFunction = async () => {
+
+  const key = 'heartRates';
+
+  Alert.alert("Scan Starting...");
+  Vibration.vibrate(1000);
+
+  try {
+    // get old data
+    const data = await AsyncStorage.getItem(key);
+
+    // append new data to old data
+    const newData = data ? JSON.parse(data) : [];
+    newData.push({ heartRate: Math.random()*50, timestamp: Date.now() });
+
+    // save data
+    await AsyncStorage.setItem(key, JSON.stringify(newData));
+    console.log("Data saved");
+
+  } catch (e) {
+    console.error("Error saving data:", e);
+  }
+};
 
 export default function TabTwoScreen() {
   return (
@@ -28,13 +54,7 @@ export default function TabTwoScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">New Scan</ThemedText>
         <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              Alert.alert("Scan Starting...");
-              Vibration.vibrate(1000);
-            }}
-          >
+          <TouchableOpacity style={styles.button} onPress={newScanFunction}>
             <Text style={styles.buttonText}>Start Scan</Text>
           </TouchableOpacity>
         </View>

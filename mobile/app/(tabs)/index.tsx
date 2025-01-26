@@ -21,8 +21,8 @@ export default function HomeScreen() {
         <ThemedText type="title">Summary</ThemedText>
       </ThemedView>
       <ThemedView style={styles.summaryView}>
-        <Card title="Recent Heart Rate" subtitle="100 BPM" />
-        <Card title="Recent Body Temperature" subtitle="98.2 F" />
+        <Card title="Most Recent Heart Rate" subtitle="100 BPM" />
+        <Card title="Most Recent Body Temperature" subtitle="98.2 F" />
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   summaryView: {
     flexDirection: "row",
     flex: 1,
-    margin: 16,
+    margin: "auto",
+    width: "70%",
     justifyContent: "center",
     flexWrap: "wrap",
     gap: 16,
