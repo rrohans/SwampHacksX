@@ -1,11 +1,11 @@
 import {
   StyleSheet,
   Image,
-  Button,
   Text,
   Alert,
   View,
   TouchableOpacity,
+  Vibration,
 } from "react-native";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -30,7 +30,10 @@ export default function TabTwoScreen() {
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => Alert.alert("Scan Starting...")}
+            onPress={() => {
+              Alert.alert("Scan Starting...");
+              Vibration.vibrate(1000);
+            }}
           >
             <Text style={styles.buttonText}>Start Scan</Text>
           </TouchableOpacity>
