@@ -61,7 +61,7 @@
     #include "board/espressif/ESP32_S3_EYE.h"
 #elif defined(BOARD_ESP32_S3_KORVO_2)
     #include "board/espressif/ESP32_S3_KORVO_2.h"
-#elif 1 //defined(BOARD_ESP32_S3_LCD_EV_BOARD)
+#elif defined(BOARD_ESP32_S3_LCD_EV_BOARD)
     #include "board/espressif/ESP32_S3_LCD_EV_BOARD.h"
 #elif defined(BOARD_ESP32_S3_LCD_EV_BOARD_V1_5)
     #include "board/espressif/ESP32_S3_LCD_EV_BOARD_V1_5.h"
