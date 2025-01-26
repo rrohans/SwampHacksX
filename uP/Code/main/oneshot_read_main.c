@@ -13,6 +13,14 @@
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
+#include "esp_lcd_io_spi.h"
+#include "driver/gpio.h"
+#include "esp_lcd_panel_io.h"
+#include "esp_lcd_panel_ops.h"
+#include "esp_lcd_panel_vendor.h"
+#include "esp_log.h"
+
+//#define TAG "GC9503NP"
 
 const static char *TAG = "EXAMPLE";
 
@@ -29,8 +37,7 @@ const static char *TAG = "EXAMPLE";
 #endif
 
 #if (SOC_ADC_PERIPH_NUM >= 2) && !CONFIG_IDF_TARGET_ESP32C3
-/**
- * On ESP32C3, ADC2 is no longer supported, due to its HW limitation.
+/* On ESP32C3, ADC2 is no longer supported, due to its HW limitation.
  * Search for errata on espressif website for more details.
  */
 #define EXAMPLE_USE_ADC2            1
@@ -52,8 +59,37 @@ static int voltage[2][10];
 static bool example_adc_calibration_init(adc_unit_t unit, adc_channel_t channel, adc_atten_t atten, adc_cali_handle_t *out_handle);
 static void example_adc_calibration_deinit(adc_cali_handle_t handle);
 
+#include <stdio.h>
+#include "esp_lcd_panel_io.h"
+#include "esp_lcd_panel_vendor.h"
+#include "esp_lcd_panel_ops.h"
+#include "driver/gpio.h"
+#include "esp_log.h"
+
+#define TAG "GC9503NP_LCD"
+
+// Pin configuration (adjust to your setup)
+#define LCD_MOSI_PIN        11
+#define LCD_SCLK_PIN        12
+#define LCD_CS_PIN          10
+#define LCD_DC_PIN          13
+#define LCD_RST_PIN         14
+#define LCD_BL_PIN          15
+
+// LCD Specifications
+#define LCD_WIDTH           480
+#define LCD_HEIGHT          480
+
+
+
 void app_main(void)
 {
+
+    // Initialize GPIO for backlight control
+    gpio_set_direction(LCD_BL_PIN, GPIO_MODE_OUTPUT);
+    gpio_set_level(LCD_BL_PIN, 1); // Turn on the backlight
+
+
     //-------------ADC1 Init---------------//
     adc_oneshot_unit_handle_t adc1_handle;
     adc_oneshot_unit_init_cfg_t init_config1 = {
@@ -79,9 +115,9 @@ void app_main(void)
 
     while (1) {
         ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, EXAMPLE_ADC1_CHAN0, &adc_raw[0][0]));
-        ESP_LOGI(TAG, "ADC%d Channel[%d] Raw Data: %d", ADC_UNIT_1 + 1, EXAMPLE_ADC1_CHAN0, adc_raw[0][0]);
-        
-        vTaskDelay(pdMS_TO_TICKS(100));
+        //ESP_LOGI(TAG, "ADC%d Channel[%d] Raw Data: %d", ADC_UNIT_1 + 1, EXAMPLE_ADC1_CHAN0, adc_raw[0][0]);
+        printf("%d\n", adc_raw[0][0]);        
+        vTaskDelay(pdMS_TO_TICKS(50));
 
     }
 
@@ -158,3 +194,4 @@ static void example_adc_calibration_deinit(adc_cali_handle_t handle)
     ESP_ERROR_CHECK(adc_cali_delete_scheme_line_fitting(handle));
 #endif
 }
+
