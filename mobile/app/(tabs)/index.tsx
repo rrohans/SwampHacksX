@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import { Image, StyleSheet, Platform, View } from "react-native";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import React from "react";
+import Card from "@/components/Card";
 
 export default function HomeScreen() {
   return (
@@ -18,6 +19,10 @@ export default function HomeScreen() {
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Summary</ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.summaryView}>
+        <Card title="Recent Heart Rate" subtitle="100 BPM" />
+        <Card title="Recent Body Temperature" subtitle="98.2 F" />
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -34,6 +39,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "125%",
     resizeMode: "contain",
-    backgroundColor: "red"
+    backgroundColor: "red",
   },
+  summaryView: {
+    flexDirection: "row",
+    flex: 1,
+    margin: 16,
+    justifyContent: "center",
+    flexWrap: "wrap",
+    gap: 16,
+    padding: 16,
+  }
 });
