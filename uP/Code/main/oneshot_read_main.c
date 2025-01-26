@@ -20,6 +20,8 @@
 #include "esp_lcd_panel_vendor.h"
 #include "esp_log.h"
 
+
+
 //#define TAG "GC9503NP"
 
 const static char *TAG = "EXAMPLE";
