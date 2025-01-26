@@ -24,12 +24,15 @@ const newScanFunction = async () => {
   Vibration.vibrate(1000);
 
   try {
+    // clear old data
+    // await AsyncStorage.removeItem(key);
+
     // get old data
     const data = await AsyncStorage.getItem(key);
 
     // append new data to old data
     const newData = data ? JSON.parse(data) : [];
-    newData.push({ heartRate: Math.random()*50, timestamp: Date.now() });
+    newData.push({ value: Math.random()*50, date: Date.now() });
 
     // save data
     await AsyncStorage.setItem(key, JSON.stringify(newData));
