@@ -10,6 +10,10 @@
 #include "lvgl_port_v8.h"
 #include <panel/ESP_Panel.h>
 // #include <lv_api_map_v8.h>
+#include <vector>
+#include <algorithm>
+
+
 
 /**
 /* To use the built-in examples and demos of LVGL uncomment the includes below respectively.
@@ -50,13 +54,27 @@ void setup()
 void loop()
 {
 
+
+    std::vector<uint16_t> dVector; 
+
+
     uint16_t data = analogRead(GPIO_NUM_4);
     std::string string = "ADC VAL: " + std::to_string(data);
 
+    uint16_t startTime = millis();
+    uint16_t elapsedTime = 0;
 
-    data = data / 200;
+    while(elapsedTime < 3000)
+    {
+        dVector.push_back(analogRead(GPIO_NUM_4)); 
+        //
+        elapsedTime = millis()-startTime;
+    }
 
 
+
+    uint16_t max = *std::max_element(dVector.begin(), dVector.end());
+    Serial.println(max);
 
 
 
@@ -81,6 +99,5 @@ void loop()
     // DISPLAY GRAPH //
     lvgl_port_unlock();
 
-    Serial.println("IDLE loop");
     //delay(1000);
 }
