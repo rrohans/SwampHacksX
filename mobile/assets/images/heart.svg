@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Red background -->
+  <rect width="200" height="200" fill="red" />
+
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff8080" />
+      <stop offset="100%" stop-color="#ff0000" />
+    </linearGradient>
+  </defs>
+
+  <!-- Heart shape -->
+  <path 
+    d="M100 160 L70 130 Q30 90 50 50 Q70 20 100 50 Q130 20 150 50 Q170 90 130 130 Z" 
+    fill="url(#heartGradient)" 
+    stroke="white" 
+    stroke-width="4" 
+  />
+</svg>
