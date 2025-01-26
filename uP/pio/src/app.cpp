@@ -9,7 +9,7 @@
 #include <lvgl.h>
 #include "lvgl_port_v8.h"
 #include <panel/ESP_Panel.h>
-#include <lv_api_map_v8.h>
+// #include <lv_api_map_v8.h>
 
 /**
 /* To use the built-in examples and demos of LVGL uncomment the includes below respectively.

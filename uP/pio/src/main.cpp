@@ -1,24 +1,24 @@
-#include <Arduino.h>
-#include <SPI.h>
-#include <lv_api_map_v8.h>
+// #include <Arduino.h>
+// #include <SPI.h>
+// // #include <lv_api_map_v8.h>
 
 
 
-void setup() {
-  Serial.begin(115200);
-  while (!Serial)
-    ;
-}
+// void setup() {
+//   Serial.begin(115200);
+//   while (!Serial)
+//     ;
+// }
 
-void loop() {
+// void loop() {
 
 
 
 
   
-  Serial.printf("Serial.println #%d\n", analogRead(GPIO_NUM_4));
+//   Serial.printf("Serial.println #%d\n", analogRead(GPIO_NUM_4));
 
 
 
-  delay(100);
-}
+//   delay(100);
+// }
